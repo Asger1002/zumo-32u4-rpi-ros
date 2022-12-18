@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(my_slam)
+project(zumo_ros)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -205,3 +205,9 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+add_executable(odom_publisher src/odom_publisher.cpp)
+target_link_libraries(odom_publisher ${catkin_LIBRARIES})
+
+add_executable(rviz_nav_goal_2d src/rviz_nav_goal_2d.cpp)
+target_link_libraries(rviz_nav_goal_2d ${catkin_LIBRARIES})

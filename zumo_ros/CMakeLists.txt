@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0.2)
 project(zumo_ros)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -10,11 +10,14 @@ project(zumo_ros)
 find_package(catkin REQUIRED COMPONENTS
   hls_lfcd_lds_driver
   tf
+  move_base
+  robot_localization
+  explore_lite
+  rosserial_python
 )
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
-
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -103,8 +106,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES my_slam
-#  CATKIN_DEPENDS gmapping hls_lfcd_lds_driver laser_scan_matcher tf
+#  LIBRARIES zumo_ros
+#  CATKIN_DEPENDS hls_lfcd_lds_driver tf slam_toolbox move_base robot_localization explore_lite
 #  DEPENDS system_lib
 )
 
@@ -121,7 +124,7 @@ include_directories(
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/my_slam.cpp
+#   src/${PROJECT_NAME}/zumo_ros.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -132,7 +135,12 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/my_slam_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/zumo_ros.cpp)
+
+
+add_executable(odom_publisher_node src/odom_publisher.cpp)
+add_executable(rviz_nav_goal_2d_node src/rviz_nav_goal_2d.cpp)
+
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -148,6 +156,10 @@ include_directories(
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
+
+target_link_libraries(odom_publisher_node ${catkin_LIBRARIES})
+target_link_libraries(rviz_nav_goal_2d_node ${catkin_LIBRARIES})
+
 
 #############
 ## Install ##
@@ -196,16 +208,10 @@ include_directories(
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_my_slam.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_zumo_ros.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-
-add_executable(odom_publisher src/odom_publisher.cpp)
-target_link_libraries(odom_publisher ${catkin_LIBRARIES})
-
-add_executable(rviz_nav_goal_2d src/rviz_nav_goal_2d.cpp)
-target_link_libraries(rviz_nav_goal_2d ${catkin_LIBRARIES})

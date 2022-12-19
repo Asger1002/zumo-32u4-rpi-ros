@@ -68,4 +68,12 @@
     <rosparam file="$(find zumo_ros)/param/base_local_planner_params.yaml" command="load" />
   </node>
 
+	<node pkg="initial_pose_publisher" type="initial_pose_publisher_node" name="initial_pose_publisher_node">
+		<param name="~pose_x" value="0.01"/>
+		<param name="~pose_y" value="0.01"/>
+		<param name="~pose_z" value="0.0"/>
+		<param name="~pose_yaw" value="0.0"/>
+		<param name="~frame_id" value="odom"/>
+	</node>
+	
 </launch>
